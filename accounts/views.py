@@ -1,13 +1,14 @@
+import pycountry
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.authtoken.models import Token
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, ProfileUpdateSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Create your views here.
+# Create your views here..
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
     
@@ -22,6 +23,7 @@ class RegisterView(APIView):
                     'id': user.id,
                     'username': user.username,
                     'email': user.email,
+                    'currency': user.currency,
                     'created_at': user.created_at
                 },
                 'token': token.key
@@ -45,6 +47,7 @@ class LoginView(APIView):
                 'id': user.id,
                 'username': user.username,
                 'email': user.email,
+                'currency': user.currency,
                 'created_at': user.created_at
             },
             'token': token.key
@@ -60,8 +63,19 @@ class ProfileView(APIView):
             'id': user.id,
             'username': user.username,
             'email': user.email,
+            'currency': user.currency,
             'created_at': user.created_at
         }, status=status.HTTP_200_OK)
+        
+    def patch(self, request):
+        serializer = ProfileUpdateSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(
+            ProfileUpdateSerializer(request.user).data, status=status.HTTP_200_OK
+        )
+        
 
 
 class LogoutView(APIView):

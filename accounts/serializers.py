@@ -1,4 +1,5 @@
 import re
+import pycountry
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
@@ -67,4 +68,18 @@ class LoginSerializer(serializers.Serializer):
 
         return user
             
-    
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'currency']
+        extra_kwargs = {
+            'username': {'required': False},
+            'currency': {'required': False},
+        }
+        
+        def validate_currency(self, value):
+            value = value.upper()
+            if not pycountry.currencies.get(alpha_3=value):
+                raise serializers.ValidationError("Invalid ISO currency code.")
+            return value
