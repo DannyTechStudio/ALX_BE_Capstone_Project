@@ -8,7 +8,7 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title']
-    ordering_fields = ['date', 'amount']
+    ordering_fields = ['date']
     
     def get_queryset(self):
         return Expense.objects.filter(owner=self.request.user)
