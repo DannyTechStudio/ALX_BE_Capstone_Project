@@ -4,7 +4,7 @@ from category.models import Category
 
 # Create your models here.
 class Expense(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False)
+    title = models.CharField(max_length=50, blank=False, null=False)
     description = models.TextField()
     amount = models.DecimalField(max_digits=14, decimal_places=2, blank=False, null=False)
     category = models.ForeignKey(
