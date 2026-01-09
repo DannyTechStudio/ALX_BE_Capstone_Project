@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zd-ct4)u6_rjw6l8o3$^uwqalntd3+ne%!d5b#7v(f5ubi3mpd'
+SECRET_KEY = os.environ.get("django-insecure-zd-ct4)u6_rjw6l8o3$^uwqalntd3+ne%!d5b#7v(f5ubi3mpd")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -78,22 +80,15 @@ WSGI_APPLICATION = 'budgetflow_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 # Database configuration using MySQL
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'budgetflow_db',
-        'USER': 'root',
-        'PASSWORD': 'Danny@Oracle_25',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.environ.get("budgetflow_db"),
+        'USER': os.environ.get("root"),
+        'PASSWORD': os.environ.get("Danny@Oracle_25"),
+        'HOST': os.environ.get("DB_HOST", "localhost"),
+        'PORT': os.environ.get("DB_HOST", "3306"),
     }
 }
 
