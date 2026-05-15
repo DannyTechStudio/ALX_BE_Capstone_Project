@@ -1,12 +1,19 @@
-env/
-venv/
-*.venv/
+# Environment variables
+.env
+.env.*
+!.env.example
 
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 
+# Databases
 *.sqlite3
 
+# Editor config
 .vscode/
 
-.budgetflow_env
+# Virtual environments
+budgetflow_env/
+venv/
+env/
